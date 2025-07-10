@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Payload DataType="Tax" DataFormat="Standard" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<TaxReturn>
+		<ReturnHeader ClientID="JOHNDOE" TaxYear="2021" ReturnType="I" ReturnGroupName="Default" Country="US" OfficeName="Dallas" BusinessUnitName="Development" ConfigurationSet="Default" ReturnVersion="1" EINorSSN="123-45-6789" ControlNumber="202204290404471817" />
+		<TaxPayerDetails NameLine1="JOHN" NameLine2="DOE" />
+		<View xsi:type="Worksheet">
+			<Identifier Hierarchy="Federal\General\Basic Data" />
+			<Controls>
+				<Entity ID="1" />
+			</Controls>
+			<WorkSheetSection Name="General">
+				<FieldData Location="IFDSGEN.0" LocationType="FieldID" Value="TX" />
+				<FieldData Location="IFDSGEN.2" LocationType="FieldID" Value="Head of household" />
+				<FieldData Location="IFDSGEN.41" LocationType="FieldID" Value="JOHN" />
+				<FieldData Location="IFDSGEN.43" LocationType="FieldID" Value="DOE" />
+				<FieldData Location="IFDSGEN.5" LocationType="FieldID" Value="123-45-6789" />
+			</WorkSheetSection>
+			<WorkSheetSection Name="Dependents" />
+			<WorkSheetSection Name="Designee - Overrides Office Manager" />
+			<WorkSheetSection Name="Direct Deposit/Electronic Funds Withdrawal" />
+			<WorkSheetSection Name="U.S. Series I Savings Bond Purchases" />
+		</View>
+	</TaxReturn>
+</Payload>

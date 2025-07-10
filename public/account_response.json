@@ -1,0 +1,332 @@
+{
+    "data": {
+        "id": "65983ac7de1fd0c1c814e0bf",
+        "createdAt": "2024-01-05T17:22:15Z",
+        "updatedAt": "2025-06-03T10:20:30Z",
+        "rightSignatureURL": "https://secure.rightsignature.com/templates/ef250171-fe36-44b5-8999-c15499c5c5dd/template-signer-link/56017b8e90b69d95420a7ead2ddc528f",
+        "status": {
+            "label": "ACTIVE",
+            "updatedAt": "2024-01-29T04:39:12.541Z",
+            "updatedBy": "6210703ab5b831ee0dee331d"
+        },
+        "progress": [
+            {
+                "stage": "personalDetails",
+                "group": "incorporation",
+                "status": [
+                    {
+                        "status": "completed",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:25:12.494Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    }
+                ]
+            },
+            {
+                "stage": "companyDetails",
+                "group": "incorporation",
+                "status": [
+                    {
+                        "status": "Started",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:26:07.424Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    },
+                    {
+                        "status": "completed",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:26:40.668Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    },
+                    {
+                        "status": "rejected",
+                        "comment": "",
+                        "updatedAt": "2024-01-29T04:38:24.657Z",
+                        "updatedBy": "6210703ab5b831ee0dee331d"
+                    }
+                ]
+            },
+            {
+                "stage": "addressDetails",
+                "group": "incorporation",
+                "status": [
+                    {
+                        "status": "completed",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:28:09.028Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    }
+                ]
+            },
+            {
+                "stage": "uploadIdentityProof",
+                "group": "accountVerification",
+                "status": [
+                    {
+                        "status": "inProgress",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:29:03.266Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    }
+                ]
+            },
+            {
+                "stage": "uploadLastYearTaxStatement",
+                "group": "accountVerification",
+                "status": [
+                    {
+                        "status": "inProgress",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:30:13.187Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    }
+                ]
+            },
+            {
+                "stage": "directDepositInformation",
+                "group": "accountVerification",
+                "status": [
+                    {
+                        "status": "completed",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:32:02.043Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    }
+                ]
+            },
+            {
+                "stage": "bankSelection",
+                "group": "formCompletion",
+                "status": [
+                    {
+                        "status": "completed",
+                        "comment": "",
+                        "updatedAt": "2024-01-05T17:32:13.702Z",
+                        "updatedBy": "65983ac7de1fd0c1c814e0c0"
+                    }
+                ]
+            },
+            {
+                "stage": "documentSigning",
+                "group": "formCompletion",
+                "status": [
+                    {
+                        "status": "inProgress",
+                        "comment": "",
+                        "updatedAt": "2024-01-24T05:03:46.768Z",
+                        "updatedBy": "6210703ab5b831ee0dee331d"
+                    },
+                    {
+                        "status": "completed",
+                        "comment": "",
+                        "updatedAt": "2024-01-29T04:37:10.261Z",
+                        "updatedBy": "6210703ab5b831ee0dee331d"
+                    }
+                ]
+            },
+            {
+                "stage": "documentOfIncorporation",
+                "group": "accountVerification",
+                "status": [
+                    {
+                        "status": "completed",
+                        "comment": "",
+                        "updatedAt": "2024-01-29T04:39:05.731Z",
+                        "updatedBy": "6210703ab5b831ee0dee331d"
+                    }
+                ]
+            }
+        ],
+        "ownerEmail": "kbarjoseph@gmail.com",
+        "companyId": "65983af49ab3bb8210697dcb",
+        "companyName": "Karen Bar-Joseph, MD PLLC",
+        "entityType": "S-CORP",
+        "ownerId": "65983ac7de1fd0c1c814e0c0",
+        "ownerName": "Karen Bar-Joseph",
+        "insights": {
+            "ytdExpense": 0,
+            "ytdGrossProfit": 0,
+            "ytdNetProfit": 0,
+            "ytdTotalIncome": 0,
+            "lyExpense": 0,
+            "lyGrossProfit": 0,
+            "lyNetProfit": 0,
+            "lyTotalIncome": 0,
+            "ytdWages": 0,
+            "lyWages": 0,
+            "ytdBankSummary": {
+                "openingBalance": 0,
+                "cashReceived": 0,
+                "cashSpent": 0,
+                "closingBalance": 0
+            },
+            "lmBankSummary": {
+                "openingBalance": 0,
+                "cashReceived": 0,
+                "cashSpent": 0,
+                "closingBalance": 0
+            },
+            "lmBankSummaryLastUpdatedAt": null
+        },
+        "gusto": {
+            "companyUUID": "a0625b88-a5fc-4dd7-ad21-aa4c0351fe73",
+            "companyName": "Karen Bar-Joseph, MD PLLC",
+            "acceptedToSDate": "2024-02-05T19:51:45.214Z"
+        },
+        "csm": {
+            "name": "Uri Bar-Joseph",
+            "email": "uri@formationscorp.com"
+        },
+        "payrollRunNumber": 6,
+        "taxes": {
+            "annualEstimated": null,
+            "ytdTotalPaid": null
+        },
+        "payroll": {
+            "estimatedSalary": 158022,
+            "ytdOfficerWages": 33784.5,
+            "lyOfficerWages": 158022.5,
+            "ytdNonOfficerWages": 0,
+            "lyNonOfficerWages": 0
+        },
+        "businessOwnerShip": "INDIVIDUAL",
+        "businessGoals": [
+            "TAX_SAVING",
+            "MAXIMIZE_BUSINESS_PROFITS"
+        ],
+        "personalFinancialGoals": [
+            "USE_TIME_EFFICIENTLY"
+        ],
+        "goalsWorkingWithFormations": [
+            "PROFESSIONAL_TAKE_CARE_OF_TAXES_AND_FINANCES",
+            "ALL_SUPPORT_FOR_TAXES_AVAILABLE_ONLINE"
+        ],
+        "xeroCompanyName": null,
+        "xeroLastError": "",
+        "xeroTransactionsError": [],
+        "xeroNonRetryal": null,
+        "xeroOrganization": null,
+        "xeroLastOrganization": {
+            "organizationId": "",
+            "shortCode": "",
+            "lastUpdatedAt": null,
+            "xeroTenantId": "f50911a6-26f8-45bf-9ee2-acde90051ef2",
+            "xeroTenantName": "Karen Bar-Joseph, MD PLLC"
+        },
+        "lastSyncedOpenTodos": {
+            "updatedAt": "2025-07-08T20:00:02.844Z",
+            "item": 2
+        },
+        "generalTaxInfo": {
+            "taxFilingStatus": "MARRIED_FILING_JOINTLY",
+            "dependents": 0,
+            "healthInsuranceStatus": "SPOUSE_EMPLOYER",
+            "healthInsuranceMonthlyPremium": 0,
+            "retirementProgram": "RETIREMENT_PLAN_DECLINED",
+            "retirementPlan": {
+                "selections": [
+                    "SOLO_INDIVIDUAL_401K"
+                ]
+            },
+            "updatedAt": "2025-03-17T04:13:22.116Z"
+        },
+        "yearlyTaxInfo": {
+            "2023": {
+                "year": 2023,
+                "retirementPlanYTDContribution": 0,
+                "spousalW2Income": 175000,
+                "updatedAt": "2024-03-15T17:33:24.131Z",
+                "previousResidencyPlan": null,
+                "retirementCYContributionPlan": null
+            },
+            "2024": {
+                "year": 2024,
+                "retirementPlanYTDContribution": 2500,
+                "spousalW2Income": 175000,
+                "projectedBusinessExpenses": 20000,
+                "requires1099": "NO",
+                "estimatedFederalTaxLiability": 107120,
+                "estimatedFederalTaxUpdatedAt": "2024-12-26T05:23:05.408Z",
+                "federalTaxPaid": 107119.96,
+                "federalTaxDirectPaid": 0,
+                "stateTaxPaid": 0,
+                "stateTaxDirectPaid": 0,
+                "updatedAt": "2024-01-05T17:23:43.684Z",
+                "previousResidencyPlan": null,
+                "retirementCYContributionPlan": null
+            },
+            "2025": {
+                "year": 2025,
+                "retirementPlanYTDContribution": 5000,
+                "spousalW2Income": 250000,
+                "estimatedFederalTaxLiability": 116238,
+                "estimatedFederalTaxUpdatedAt": "2025-06-03T10:20:30.265Z",
+                "federalTaxPaid": 31199.97,
+                "federalTaxDirectPaid": 0,
+                "stateTaxPaid": 0,
+                "stateTaxDirectPaid": 0,
+                "previousResidencyPlan": null,
+                "retirementCYContributionPlan": null
+            }
+        },
+        "xeroConnected": false,
+        "hurdlrConnected": true,
+        "oilUnreadCustomerNoteItemsCount": 0,
+        "oilPendingReviewItemsCount": 0,
+        "hurdlrInsights": {
+            "lyProfitLoss": {
+                "beginDate": "2024-01-01",
+                "endDate": "2024-12-31",
+                "netIncome": 356755.65,
+                "income": 544798,
+                "expenses": 188042.35,
+                "grossProfit": 544798
+            },
+            "ytdProfitLoss": {
+                "beginDate": "2025-01-01",
+                "endDate": "2025-12-31",
+                "netIncome": 132467.76,
+                "income": 172057,
+                "expenses": 39589.24,
+                "grossProfit": 172057
+            },
+            "lyOfficerWages": 30375.09,
+            "ytdOfficerWages": 18226.5,
+            "lmCashflow": {
+                "beginDate": "2025-01-01",
+                "endDate": "2025-06-30",
+                "netCashChange": -17655.39,
+                "beginCashBalance": 27152.68,
+                "endCashBalance": 9497.29
+            },
+            "ytdCashflow": {
+                "beginDate": "2025-01-01",
+                "endDate": "2025-07-04",
+                "netCashChange": -17655.39,
+                "beginCashBalance": 27152.68,
+                "endCashBalance": 9497.29
+            }
+        },
+        "hurdlrBankConnectionStatus": {
+            "connectionCount": 4,
+            "errorConnectionCount": 0
+        },
+        "bookkeeper": {
+            "id": "344952832",
+            "name": "Menuka Perera"
+        },
+        "formationsPlan": "FullSuite",
+        "homeAddress": {
+            "street1": "8761 Island Heights Lane",
+            "street2": "",
+            "city": "Mercer Island",
+            "state": "WA",
+            "country": "",
+            "zip": "98040"
+        },
+        "disabledPayroll": false,
+        "projectedGrossIncome": 500000,
+        "incomeExpense": null,
+        "retirementContributionGoal": null
+    }
+}
