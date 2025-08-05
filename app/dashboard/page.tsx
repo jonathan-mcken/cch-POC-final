@@ -26,8 +26,20 @@ import {
   Copy,
   X,
   Plus,
-  DollarSign
+  DollarSign,
+  Play,
+  Settings,
+  Code,
+  Eye,
+  EyeOff,
+  Zap,
+  ChevronRight,
+  ChevronDown,
+  Info,
+  Lightbulb,
+  Sparkles
 } from 'lucide-react';
+import { V2WorkflowModal } from '@/components/v2-workflow/V2WorkflowModal';
 
 export default function DashboardPage() {
   const {
@@ -47,10 +59,24 @@ export default function DashboardPage() {
   
   // Tax return export state
   const [returnId, setReturnId] = useState('2024S:KAR1367:V1');
-  const [configurationXml, setConfigurationXml] = useState('<TaxDataExportOptions><ExportUnitsSelectionPreference>FilledWorksheetUnits</ExportUnitsSelectionPreference><DefaultPreferences><GenerateMeta>false</GenerateMeta><GenerateLookupItems>true</GenerateLookupItems><FieldValueExportSelection>OnlyFieldsWithData</FieldValueExportSelection><WorksheetGridExportMode>DetailMode</WorksheetGridExportMode><WhitepaperStatementExportMode>Suppress</WhitepaperStatementExportMode></DefaultPreferences><ExportDiagnosticsMode>Suppress</ExportDiagnosticsMode><CalcReturnBeforeExport>false</CalcReturnBeforeExport><DefaultFieldIdentifierPreference>FieldID</DefaultFieldIdentifierPreference></TaxDataExportOptions>');
+  const [configurationXml, setConfigurationXml] = useState(`<TaxDataExportOptions>
+  <ExportUnitsSelectionPreference>FilledWorksheetUnits</ExportUnitsSelectionPreference>
+  <DefaultPreferences>
+    <GenerateMeta>false</GenerateMeta>
+    <GenerateLookupItems>true</GenerateLookupItems>
+    <FieldValueExportSelection>OnlyFieldsWithData</FieldValueExportSelection>
+    <WorksheetGridExportMode>DetailMode</WorksheetGridExportMode>
+    <WhitepaperStatementExportMode>Suppress</WhitepaperStatementExportMode>
+  </DefaultPreferences>
+  <ExportDiagnosticsMode>Suppress</ExportDiagnosticsMode>
+  <CalcReturnBeforeExport>false</CalcReturnBeforeExport>
+  <DefaultFieldIdentifierPreference>FieldID</DefaultFieldIdentifierPreference>
+</TaxDataExportOptions>`);
   const [exportResult, setExportResult] = useState<any>(null);
   const [exportingTaxReturn, setExportingTaxReturn] = useState(false);
   const [exportProgress, setExportProgress] = useState<string>('');
+  const [showXmlEditor, setShowXmlEditor] = useState(false);
+  const [xmlPreviewMode, setXmlPreviewMode] = useState(false);
 
   // Batch output files state
   const [batchGuid, setBatchGuid] = useState('');
@@ -77,6 +103,122 @@ export default function DashboardPage() {
   const [importBatchGuid, setImportBatchGuid] = useState('');
   const [importBatchStatusResult, setImportBatchStatusResult] = useState<any>(null);
   const [checkingImportBatchStatus, setCheckingImportBatchStatus] = useState(false);
+
+  // V2 Demo Workflow state
+  const [showV2DemoModal, setShowV2DemoModal] = useState(false);
+
+  // XML Configuration presets
+  const xmlPresets = {
+    standard: {
+      name: "Standard Export",
+      description: "Basic export with filled worksheet units only",
+      xml: `<TaxDataExportOptions>
+  <ExportUnitsSelectionPreference>FilledWorksheetUnits</ExportUnitsSelectionPreference>
+  <DefaultPreferences>
+    <GenerateMeta>false</GenerateMeta>
+    <GenerateLookupItems>true</GenerateLookupItems>
+    <FieldValueExportSelection>OnlyFieldsWithData</FieldValueExportSelection>
+    <WorksheetGridExportMode>DetailMode</WorksheetGridExportMode>
+    <WhitepaperStatementExportMode>Suppress</WhitepaperStatementExportMode>
+  </DefaultPreferences>
+  <ExportDiagnosticsMode>Suppress</ExportDiagnosticsMode>
+  <CalcReturnBeforeExport>false</CalcReturnBeforeExport>
+  <DefaultFieldIdentifierPreference>FieldID</DefaultFieldIdentifierPreference>
+</TaxDataExportOptions>`
+    },
+    comprehensive: {
+      name: "Comprehensive Export",
+      description: "Complete export with all data and metadata",
+      xml: `<TaxDataExportOptions>
+  <ExportUnitsSelectionPreference>AllUnits</ExportUnitsSelectionPreference>
+  <DefaultPreferences>
+    <GenerateMeta>true</GenerateMeta>
+    <GenerateLookupItems>true</GenerateLookupItems>
+    <FieldValueExportSelection>AllFields</FieldValueExportSelection>
+    <WorksheetGridExportMode>DetailMode</WorksheetGridExportMode>
+    <WhitepaperStatementExportMode>Include</WhitepaperStatementExportMode>
+  </DefaultPreferences>
+  <ExportDiagnosticsMode>Include</ExportDiagnosticsMode>
+  <CalcReturnBeforeExport>true</CalcReturnBeforeExport>
+  <DefaultFieldIdentifierPreference>FieldID</DefaultFieldIdentifierPreference>
+</TaxDataExportOptions>`
+    },
+    minimal: {
+      name: "Minimal Export",
+      description: "Lightweight export for quick processing",
+      xml: `<TaxDataExportOptions>
+  <ExportUnitsSelectionPreference>FilledWorksheetUnits</ExportUnitsSelectionPreference>
+  <DefaultPreferences>
+    <GenerateMeta>false</GenerateMeta>
+    <GenerateLookupItems>false</GenerateLookupItems>
+    <FieldValueExportSelection>OnlyFieldsWithData</FieldValueExportSelection>
+    <WorksheetGridExportMode>SummaryMode</WorksheetGridExportMode>
+    <WhitepaperStatementExportMode>Suppress</WhitepaperStatementExportMode>
+  </DefaultPreferences>
+  <ExportDiagnosticsMode>Suppress</ExportDiagnosticsMode>
+  <CalcReturnBeforeExport>false</CalcReturnBeforeExport>
+  <DefaultFieldIdentifierPreference>FieldID</DefaultFieldIdentifierPreference>
+</TaxDataExportOptions>`
+    }
+  };
+
+  // Format XML with proper indentation
+  const formatXmlString = (xml: string): string => {
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xml, 'application/xml');
+      
+      // Check for parsing errors
+      const parserError = xmlDoc.querySelector('parsererror');
+      if (parserError) {
+        return xml; // Return original if parsing fails
+      }
+      
+      // Simple formatting - split by tags and add indentation
+      let formatted = xml;
+      formatted = formatted.replace(/>\s*</g, '>\n<');
+      
+      const lines = formatted.split('\n');
+      const result: string[] = [];
+      let indent = 0;
+      const indentSize = 2;
+      
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        
+        // Check if this is a closing tag
+        if (trimmed.startsWith('</')) {
+          indent = Math.max(0, indent - indentSize);
+        }
+        
+        // Add indentation
+        result.push(' '.repeat(indent) + trimmed);
+        
+        // Check if this is an opening tag that should increase indent
+        if (trimmed.startsWith('<') && !trimmed.startsWith('</') && !trimmed.endsWith('/>') && !trimmed.includes('<?xml')) {
+          const tagMatch = trimmed.match(/<([^>\s\/]+)/);
+          if (tagMatch) {
+            const tagName = tagMatch[1];
+            if (!trimmed.includes(`</${tagName}>`) && !trimmed.endsWith('/>')) {
+              indent += indentSize;
+            }
+          }
+        }
+      }
+      
+      return result.join('\n');
+    } catch (error) {
+      return xml;
+    }
+  };
+
+  const applyXmlPreset = (presetKey: string) => {
+    const preset = xmlPresets[presetKey as keyof typeof xmlPresets];
+    if (preset) {
+      setConfigurationXml(preset.xml);
+    }
+  };
 
   const handleRefreshTokens = async () => {
     setRefreshing(true);
@@ -171,7 +313,7 @@ export default function DashboardPage() {
   };
 
   const pollForFiles = async (executionId: string): Promise<any[]> => {
-    const maxAttempts = 30; // 5 minutes max (10 seconds * 30)
+    const maxAttempts = 5; // 5 minutes max (10 seconds * 30)
     const pollInterval = 10000; // 10 seconds
     
     // First, poll for batch completion status
@@ -839,21 +981,43 @@ export default function DashboardPage() {
 
   const fetchFinancialData = async (userId: string, beginDate = '2024-01-01', endDate = '2024-12-31') => {
     try {
+      setV2CreationProgress('🔑 Getting Hurdlr access token...');
+      
+      // Step 1: Get the Hurdlr access token
+      const tokenResponse = await fetch(`/api/v2/hurdlr/${userId}/token`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      const tokenData = await tokenResponse.json();
+      
+      if (!tokenData.success) {
+        throw new Error(tokenData.error || 'Failed to get Hurdlr access token');
+      }
+
       setV2CreationProgress('📊 Fetching financial data from Hurdlr...');
       
-      const response = await fetch(`/api/formations/hurdlr/${userId}`, {
+      // Step 2: Use the token to fetch P&L data  
+      // Try using the business ID instead of accountId for Hurdlr user token
+      const hurdlrUserId = userId; // Use the business ID that was passed in
+      
+      const dataResponse = await fetch(`/api/v2/hurdlr/${userId}/data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          accessToken: tokenData.accessToken,
+          accountId: hurdlrUserId,
           beginDate,
           endDate,
           grouping: 'YEARLY'
         }),
       });
       
-      const data = await response.json();
+      const data = await dataResponse.json();
       
       if (!data.success) {
         throw new Error(data.error || 'Failed to fetch financial data');
@@ -879,8 +1043,8 @@ export default function DashboardPage() {
     
     try {
       // Step 1: Fetch account data (using the hardcoded account ID from your example)
-      const accountId = '65983ac7de1fd0c1c814e0bf';
-      const accountInfo = await fetchAccountData(accountId);
+          const businessId = '65983af49ab3bb8210697dcb';
+    const accountInfo = await fetchAccountData(businessId);
       
       // Step 2: Use the main ID from account data (same as Hurdlr user ID by design)
       const userId = accountInfo?.data?.id;
@@ -1705,92 +1869,265 @@ ${taxReturnContent}
           </CardContent>
         </Card>
         
-        {/* Tax Return Export & Download Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <FileDown className="h-5 w-5" />
-              <span>Tax Return Export & Download</span>
-            </CardTitle>
-            <CardDescription>
-              Complete workflow: Export tax return, wait for processing, and automatically download files
-            </CardDescription>
+        {/* Enhanced Tax Return Export & Processing Section */}
+        <Card className="border-0 shadow-lg overflow-hidden bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
+          <CardHeader className="border-b border-blue-100 dark:border-blue-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center">
+                  <FileDown className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">Tax Return Export & Processing</CardTitle>
+                </div>
+              </div>
+              <Badge variant="secondary" className="text-xs">
+                Step 1 of 3
+              </Badge>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="returnId">Return ID</Label>
+          <CardContent className="p-6 space-y-3 bg-white dark:bg-gray-900">
+            {/* Return ID Input */}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Label htmlFor="returnId" className="text-sm font-medium">Return ID</Label>
+                <Badge variant="outline" className="text-xs">Required</Badge>
+              </div>
               <Input
                 id="returnId"
                 value={returnId}
                 onChange={(e) => setReturnId(e.target.value)}
-                placeholder="2024S:KAR1367:V1"
+                placeholder="e.g., 2024S:KAR1367:V1"
                 disabled={exportingTaxReturn}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="configurationXml">Configuration XML</Label>
-              <Textarea
-                id="configurationXml"
-                value={configurationXml}
-                onChange={(e) => setConfigurationXml(e.target.value)}
-                placeholder="<TaxDataExportOptions>...</TaxDataExportOptions>"
-                rows={4}
                 className="font-mono text-sm"
-                disabled={exportingTaxReturn}
               />
+              <p className="text-xs text-gray-500">
+                Enter the unique identifier for the tax return you want to export from CCH Axcess
+              </p>
             </div>
             
-            <Button
-              onClick={exportTaxReturn}
-              disabled={exportingTaxReturn || !returnId || !configurationXml}
-              className="flex items-center space-x-2 w-full"
-              size="lg"
-            >
-              <Download className={`h-4 w-4 ${exportingTaxReturn ? 'animate-spin' : ''}`} />
-              <span>{exportingTaxReturn ? 'Processing...' : 'Export & Download Tax Return'}</span>
-            </Button>
+            <Separator />
             
-            {/* Progress Display */}
+            {/* XML Configuration Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Label className="text-sm font-medium">Export Configuration</Label>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowXmlEditor(!showXmlEditor)}
+                    className="h-6 px-2 text-xs"
+                  >
+                    {showXmlEditor ? <EyeOff className="h-3 w-3 mr-1" /> : <Eye className="h-3 w-3 mr-1" />}
+                    {showXmlEditor ? 'Hide' : 'Show'} Advanced
+                  </Button>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setXmlPreviewMode(!xmlPreviewMode)}
+                    disabled={!showXmlEditor}
+                    className="h-6 px-2 text-xs"
+                  >
+                    <Code className="h-3 w-3 mr-1" />
+                    {xmlPreviewMode ? 'Edit' : 'Preview'}
+                  </Button>
+                </div>
+              </div>
+
+              {/* XML Presets */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {Object.entries(xmlPresets).map(([key, preset]) => (
+                  <Button
+                    key={key}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => applyXmlPreset(key)}
+                    disabled={exportingTaxReturn}
+                    className="h-auto p-3 flex flex-col items-start text-left space-y-1 hover:bg-blue-50 dark:hover:bg-blue-950"
+                  >
+                    <div className="font-medium text-sm">{preset.name}</div>
+                    <div className="text-xs text-gray-500">{preset.description}</div>
+                  </Button>
+                ))}
+              </div>
+
+              {/* Advanced XML Editor */}
+              {showXmlEditor && (
+                <div className="border rounded-lg bg-white dark:bg-gray-800">
+                  <div className="border-b bg-gray-50 dark:bg-gray-900 px-3 py-2 flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Settings className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm font-medium">XML Configuration Editor</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const formatted = formatXmlString(configurationXml);
+                          setConfigurationXml(formatted);
+                        }}
+                        className="h-6 px-2 text-xs"
+                      >
+                        <Zap className="h-3 w-3 mr-1" />
+                        Format
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {xmlPreviewMode ? (
+                    // Preview Mode - Read-only formatted display
+                    <div className="p-4">
+                      <pre className="text-sm font-mono bg-gray-50 dark:bg-gray-900 p-4 rounded border overflow-auto max-h-80 leading-relaxed">
+                        <code className="xml-preview">
+                          {formatXmlString(configurationXml).split('\n').map((line, index) => (
+                            <div key={index} className="hover:bg-gray-100 dark:hover:bg-gray-800 px-2 -mx-2 py-0.5 rounded">
+                              <span className="text-gray-400 dark:text-gray-500 text-xs w-6 inline-block select-none mr-2">
+                                {(index + 1).toString().padStart(2, ' ')}
+                              </span>
+                              <span className={`
+                                ${line.trim().startsWith('<?xml') ? 'text-purple-600 dark:text-purple-400' : ''}
+                                ${line.trim().startsWith('</') ? 'text-red-600 dark:text-red-400' : ''}
+                                ${line.trim().startsWith('<') && !line.trim().startsWith('</') && !line.trim().startsWith('<?xml') ? 'text-blue-600 dark:text-blue-400' : ''}
+                                ${!line.trim().startsWith('<') && line.trim().length > 0 ? 'text-green-600 dark:text-green-400' : ''}
+                              `}>
+                                {line || ' '}
+                              </span>
+                            </div>
+                          ))}
+                        </code>
+                      </pre>
+                    </div>
+                  ) : (
+                    // Edit Mode - Editable textarea with better formatting
+                    <div className="p-4">
+                      <Textarea
+                        value={configurationXml}
+                        onChange={(e) => setConfigurationXml(e.target.value)}
+                        placeholder="<TaxDataExportOptions>...</TaxDataExportOptions>"
+                        rows={12}
+                        className="font-mono text-sm leading-relaxed resize-none border-0 focus:ring-1 focus:ring-blue-500"
+                        disabled={exportingTaxReturn}
+                        style={{
+                          tabSize: 2,
+                          fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Inconsolata, "Roboto Mono", monospace'
+                        }}
+                      />
+                    </div>
+                  )}
+                  
+                  {/* XML Editor Help */}
+                  <div className="border-t bg-amber-50 dark:bg-amber-950 px-3 py-2">
+                    <div className="flex items-start space-x-2">
+                      <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+                      <div className="text-xs text-amber-800 dark:text-amber-200">
+                        <strong>Configuration Tips:</strong> Use presets above for common scenarios. 
+                        Toggle between Edit/Preview modes to validate formatting. 
+                        Click "Format" to auto-indent your XML.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <Separator />
+            
+            {/* Action Button */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Info className="h-4 w-4 text-blue-500" />
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  This will export the tax return, monitor processing, and automatically download results
+                </span>
+              </div>
+              <Button
+                onClick={exportTaxReturn}
+                disabled={exportingTaxReturn || !returnId || !configurationXml}
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8"
+              >
+                {exportingTaxReturn ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Start Export Workflow
+                  </>
+                )}
+              </Button>
+            </div>
+            
+            {/* Enhanced Progress Display */}
             {exportProgress && (
-              <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded p-3">
-                <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">
-                  {exportProgress}
-                </p>
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div className="flex items-center space-x-3">
+                  <div className="flex-shrink-0">
+                    {exportProgress.includes('✅') ? (
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                    ) : exportProgress.includes('❌') ? (
+                      <XCircle className="h-5 w-5 text-red-500" />
+                    ) : (
+                      <RefreshCw className="h-5 w-5 text-blue-500 animate-spin" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-blue-900 dark:text-blue-100 text-sm">
+                      {exportProgress}
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
             
-            {/* Results Display */}
+            {/* Enhanced Results Display */}
             {exportResult && (
-              <div className="space-y-2">
-                <h4 className="font-semibold text-sm">Workflow Results:</h4>
-                
-                {exportResult.success && exportResult.response && (
-                  <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded p-3">
-                    <div className="text-sm text-green-800 dark:text-green-200">
-                      <p className="font-medium">✅ Export initiated successfully!</p>
-                      <p>Execution ID: {exportResult.response.ExecutionID}</p>
-                      <p>File Results: {exportResult.response.FileResults?.length || 0} item(s)</p>
+              <div className="space-y-3">
+                {exportResult.success && exportResult.response ? (
+                  <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-green-900 dark:text-green-100 text-sm mb-2">
+                          Export Successfully Initiated
+                        </h4>
+                        <div className="space-y-1 text-sm text-green-800 dark:text-green-200">
+                          <p><strong>Execution ID:</strong> {exportResult.response.ExecutionID}</p>
+                          <p><strong>Items Queued:</strong> {exportResult.response.FileResults?.length || 0}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
-                
-                {exportResult.error && (
-                  <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded p-3">
-                    <div className="text-sm text-red-800 dark:text-red-200">
-                      <p className="font-medium">❌ Workflow failed</p>
-                      <p>Error: {exportResult.error}</p>
+                ) : exportResult.error ? (
+                  <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <XCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-red-900 dark:text-red-100 text-sm mb-2">
+                          Export Failed
+                        </h4>
+                        <p className="text-sm text-red-800 dark:text-red-200">
+                          {exportResult.error}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                )}
+                ) : null}
                 
-                {/* Show debug info in collapsed section */}
+                {/* Collapsible debug info */}
                 <details className="mt-3">
-                  <summary className="text-sm font-medium cursor-pointer text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
-                    Show detailed results
+                  <summary className="text-sm font-medium cursor-pointer text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 flex items-center space-x-2">
+                    <ChevronRight className="h-3 w-3 transition-transform duration-200" />
+                    <span>Show detailed technical information</span>
                   </summary>
-                  <div className="mt-2 bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm">
-                    <pre className="whitespace-pre-wrap">
+                  <div className="mt-2 bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm border-l-2 border-gray-300 dark:border-gray-600">
+                    <pre className="whitespace-pre-wrap text-xs">
                       {JSON.stringify(exportResult, null, 2)}
                     </pre>
                   </div>
@@ -2092,6 +2429,24 @@ ${taxReturnContent}
           <CardContent className="space-y-4">
             <div className="flex items-center space-x-4">
               <Button
+                onClick={() => setShowV2DemoModal(true)}
+                variant="outline"
+                className="bg-gradient-to-r from-purple-100 to-blue-100 hover:from-purple-200 hover:to-blue-200 text-purple-700 border-purple-200"
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                Modal Demo
+              </Button>
+
+              <Button
+                onClick={() => window.location.href = '/workflow'}
+                variant="outline"
+                className="bg-gradient-to-r from-emerald-100 to-teal-100 hover:from-emerald-200 hover:to-teal-200 text-emerald-700 border-emerald-200"
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                Full Page Workflow
+              </Button>
+              
+              <Button
                 onClick={createV2TaxReturn}
                 disabled={isCreatingV2}
                 variant="default"
@@ -2326,6 +2681,12 @@ ${taxReturnContent}
           </Card>
         )}
       </div>
+
+      {/* V2 Demo Workflow Modal */}
+      <V2WorkflowModal 
+        isOpen={showV2DemoModal} 
+        onClose={() => setShowV2DemoModal(false)} 
+      />
     </div>
   );
 } 
