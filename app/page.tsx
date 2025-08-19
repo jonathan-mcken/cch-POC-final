@@ -2,23 +2,9 @@
 
 import { useState, useEffect } from "react"
 import type React from "react"
-
 import Link from "next/link"
-import {
-  ArrowRight,
-  Bot,
-  CheckCircle,
-  GanttChartSquare,
-  Layers,
-  LayoutDashboard,
-  LinkIcon,
-  LogOut,
-  RefreshCw,
-  ShieldCheck,
-  Zap,
-} from "lucide-react"
+import { ArrowRight, Bot, CheckCircle, LayoutDashboard, LogOut, RefreshCw, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function HomePage() {
   const [isChecking, setIsChecking] = useState(true)
@@ -76,7 +62,7 @@ export default function HomePage() {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center bg-slate-50 text-slate-800">
         <RefreshCw className="h-8 w-8 animate-spin text-slate-600" />
-        <p className="mt-4 text-lg text-slate-600">Initializing Platform...</p>
+        <p className="mt-4 text-lg text-slate-600">Connecting Formations & Agora...</p>
       </div>
     )
   }
@@ -85,19 +71,39 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen bg-slate-50 text-slate-800">
       <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-lg">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-          <Link href="#" className="flex items-center gap-2 font-bold text-lg">
-            <Layers className="h-6 w-6 text-slate-900" />
-            <span>Axcess Automate</span>
+          <Link href="#" className="flex items-center gap-4 font-bold text-lg">
+            <div className="flex items-center gap-3">
+              <img
+                src="/formations-logo.png"
+                alt="Formations Logo"
+                className="h-8 w-auto"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.svg?height=32&width=120&text=Formations"
+                }}
+              />
+              <span className="text-slate-400">×</span>
+              <img
+                src="/agora-logo.png"
+                alt="Agora Logo"
+                className="h-8 w-auto"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.svg?height=32&width=120&text=Agora"
+                }}
+              />
+            </div>
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-            <Link href="#features" className="transition-colors hover:text-slate-900">
-              Features
+            <Link href="#partnership" className="transition-colors hover:text-slate-900">
+              Partnership
             </Link>
             <Link href="#solution" className="transition-colors hover:text-slate-900">
               Solution
             </Link>
-            <Link href="#roi" className="transition-colors hover:text-slate-900">
-              ROI
+            <Link href="#benefits" className="transition-colors hover:text-slate-900">
+              Benefits
+            </Link>
+            <Link href="/partnership-workflow" className="transition-colors hover:text-slate-900">
+              Workflow
             </Link>
           </nav>
           <div className="flex items-center gap-2">
@@ -107,6 +113,12 @@ export default function HomePage() {
                   <Link href="/dashboard">
                     <LayoutDashboard className="mr-2 h-4 w-4" />
                     Dashboard
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link href="/partnership-workflow">
+                    Workflow
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button onClick={handleLogout}>
@@ -126,196 +138,143 @@ export default function HomePage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative py-20 md:py-32 bg-white">
-          <div className="absolute inset-0 bg-[url('/placeholder.svg?height=1080&width=1920')] bg-cover bg-center opacity-5"></div>
+          <div className="absolute inset-0 bg-[url('/modern-office.png')] bg-cover bg-center opacity-5"></div>
           <div className="container mx-auto px-4 md:px-6 text-center relative">
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900">
-              Automate Your Tax Workflow. Seamlessly.
+              Tech-Enabled 1065 Tax Preparation.
+              <br />
+              <span className="text-blue-600">Formations × Agora Partnership.</span>
             </h1>
             <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-slate-600">
-              The first platform to bridge CCH Axcess, Formations, and Hurdlr. Generate accurate, up-to-date tax returns
-              using live financial data.
+              Formations delivers incredibly efficient 1065 tax preparation through automated inputs, automatic QA, and
+              decades of tax team experience. Agora benefits from streamlined turnaround times and consistent deadline
+              compliance.
             </p>
             <div className="mt-8 flex justify-center gap-4">
               {isAuthenticated ? (
                 <Button size="lg" asChild>
                   <Link href="/dashboard">
-                    Go to Dashboard
+                    Access Partnership Portal
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
               ) : (
                 <>
                   <Button size="lg" onClick={handleLogin}>
-                    Sign in with CCH Axcess
+                    Get Started with Partnership
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                   <Button size="lg" variant="outline" asChild>
-                    <Link href="#features">Learn More</Link>
+                    <Link href="#metrics">See Results</Link>
                   </Button>
                 </>
+              )}
+              {isAuthenticated && (
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/partnership-workflow">View Workflow</Link>
+                </Button>
               )}
             </div>
             {isAuthenticated && userInfo && (
               <div className="mt-8 flex justify-center items-center gap-2 text-green-600 font-semibold">
                 <CheckCircle className="h-5 w-5" />
-                <span>Platform Connected. Account: {userInfo.a || "N/A"}</span>
+                <span>Partnership Connected. Account: {userInfo.a || "N/A"}</span>
               </div>
             )}
-            <div className="mt-12 text-sm font-semibold text-slate-500">INTEGRATED WITH YOUR FAVORITE PLATFORMS</div>
-            <div className="mt-4 flex justify-center items-center gap-8 opacity-70">
-              <span className="font-bold text-lg">CCH Axcess</span>
-              <span className="font-bold text-lg">Formations</span>
-              <span className="font-bold text-lg">Hurdlr</span>
-            </div>
           </div>
         </section>
 
-        {/* Problem/Solution Section */}
-        <section id="solution" className="py-16 md:py-24 bg-slate-50">
+        {/* Metrics Section */}
+        <section id="metrics" className="py-20 md:py-32 bg-slate-900 text-white">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">From Manual Chaos to Automated Clarity</h2>
-              <p className="mt-4 max-w-2xl mx-auto text-slate-600">
-                Stop wasting 80% of your prep time on manual data entry. Our platform eliminates errors,
-                inconsistencies, and version control nightmares.
-              </p>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-5xl font-bold">Partnership Results</h2>
+              <p className="mt-4 text-xl text-slate-300">Automated inputs. Automatic QA. Expert oversight.</p>
             </div>
-            <div className="mt-12 grid md:grid-cols-2 gap-8 items-center">
-              <div className="rounded-lg border bg-white p-8">
-                <h3 className="text-2xl font-semibold text-slate-800">The Old Way</h3>
-                <ul className="mt-4 space-y-3 text-slate-600">
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-3 mt-1">❌</span>
-                    <span>Hours of manual data entry and re-entry.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-3 mt-1">❌</span>
-                    <span>Outdated financial data leading to inaccurate returns.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-3 mt-1">❌</span>
-                    <span>Juggling multiple systems, causing inefficiency.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-500 mr-3 mt-1">❌</span>
-                    <span>Complex and error-prone version control.</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="rounded-lg border-2 border-slate-900 bg-white p-8 shadow-2xl">
-                <h3 className="text-2xl font-semibold text-slate-900">The Axcess Automate Way</h3>
-                <ul className="mt-4 space-y-3 text-slate-600">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-3 mt-1">✅</span>
-                    <span>Real-time data synchronization from all your sources.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-3 mt-1">✅</span>
-                    <span>Intelligent, automated tax return generation (V2).</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-3 mt-1">✅</span>
-                    <span>Direct, secure integration with CCH Axcess.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-3 mt-1">✅</span>
-                    <span>Complete visibility with real-time status tracking.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Features Section */}
-        <section id="features" className="py-16 md:py-24 bg-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">A Smarter Way to Manage Tax Returns</h2>
-              <p className="mt-4 max-w-2xl mx-auto text-slate-600">
-                Our platform is packed with features designed to maximize your firm's efficiency and accuracy.
-              </p>
+            <div className="grid gap-12 md:grid-cols-3 mb-16">
+              <div className="text-center">
+                <div className="text-6xl md:text-8xl font-extrabold text-blue-400 mb-4">3,000+</div>
+                <div className="text-xl font-semibold text-white mb-2">Annual Returns</div>
+                <div className="text-slate-400">Processed efficiently through tech-enabled workflows</div>
+              </div>
+              <div className="text-center">
+                <div className="text-6xl md:text-8xl font-extrabold text-green-400 mb-4">100%</div>
+                <div className="text-xl font-semibold text-white mb-2">On-Time Filing</div>
+                <div className="text-slate-400">Original deadlines met consistently</div>
+              </div>
+              <div className="text-center">
+                <div className="text-6xl md:text-8xl font-extrabold text-yellow-400 mb-4">50%</div>
+                <div className="text-xl font-semibold text-white mb-2">Faster Processing</div>
+                <div className="text-slate-400">Compared to traditional tax preparation</div>
+              </div>
             </div>
-            <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <FeatureCard
-                icon={<RefreshCw className="h-8 w-8 text-slate-900" />}
-                title="Real-Time Data Sync"
-                description="Automatically pull current financial data from Hurdlr and business details from Formations. Your returns always reflect the latest information."
-              />
-              <FeatureCard
-                icon={<Bot className="h-8 w-8 text-slate-900" />}
-                title="Intelligent Return Generation"
-                description="Create new tax return versions (V2) using live data. Our smart mapping ensures data is placed correctly, maintaining form structure and compliance."
-              />
-              <FeatureCard
-                icon={<LinkIcon className="h-8 w-8 text-slate-900" />}
-                title="Direct CCH Axcess Integration"
-                description="Seamless, secure OAuth 2.0 integration with the industry-standard tax software. Handle batch processing for multiple returns with ease."
-              />
-              <FeatureCard
-                icon={<GanttChartSquare className="h-8 w-8 text-slate-900" />}
-                title="Complete Process Visibility"
-                description="A centralized dashboard provides real-time status tracking for all operations, with detailed progress monitoring and error reporting."
-              />
-              <FeatureCard
-                icon={<ShieldCheck className="h-8 w-8 text-slate-900" />}
-                title="Enterprise-Grade Security"
-                description="Industry-standard OAuth, data encryption in transit and at rest, and comprehensive audit trails ensure your data and your clients' data is always protected."
-              />
-              <FeatureCard
-                icon={<Zap className="h-8 w-8 text-slate-900" />}
-                title="One-Click Export"
-                description="Effortlessly download existing or newly generated returns from CCH Axcess with automatic file management and organization."
-              />
-            </div>
-          </div>
-        </section>
 
-        {/* ROI Section */}
-        <section id="roi" className="py-16 md:py-24 bg-slate-900 text-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold">Unlock Unprecedented Business Value</h2>
-              <p className="mt-4 max-w-2xl mx-auto text-slate-300">
-                Transform your practice with measurable improvements in efficiency, client service, and scalability.
-              </p>
-            </div>
-            <div className="mt-12 grid gap-8 md:grid-cols-3">
-              <div className="text-center p-6">
-                <p className="text-5xl md:text-6xl font-extrabold text-white">70-80%</p>
-                <p className="mt-2 text-lg font-medium text-slate-300">Reduction in Prep Time</p>
+            <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+              <div className="bg-slate-800 rounded-xl p-8 border border-slate-700">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="bg-blue-600 p-3 rounded-lg">
+                    <Bot className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">Formations</h3>
+                    <p className="text-slate-400">Tech-Enabled Tax Preparation</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span className="text-slate-300">Automated input processing</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span className="text-slate-300">Automatic quality assurance</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span className="text-slate-300">Expert tax team oversight</span>
+                  </div>
+                </div>
               </div>
-              <div className="text-center p-6">
-                <p className="text-5xl md:text-6xl font-extrabold text-white">3x</p>
-                <p className="mt-2 text-lg font-medium text-slate-300">More Clients, Same Staff</p>
-              </div>
-              <div className="text-center p-6">
-                <p className="text-5xl md:text-6xl font-extrabold text-white">99.9%</p>
-                <p className="mt-2 text-lg font-medium text-slate-300">Accuracy via Automation</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Final CTA Section */}
-        <section className="py-20 md:py-28 bg-white">
-          <div className="container mx-auto px-4 md:px-6 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Ready to Revolutionize Your Tax Practice?</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-slate-600">
-              Get started today and experience the future of automated tax preparation. Stop chasing data and start
-              advising clients.
-            </p>
-            <div className="mt-8">
+              <div className="bg-slate-800 rounded-xl p-8 border border-slate-700">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="bg-green-600 p-3 rounded-lg">
+                    <Users className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">Agora</h3>
+                    <p className="text-slate-400">Real Estate Technology</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span className="text-slate-300">Faster turnaround times</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span className="text-slate-300">Consistent deadline compliance</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span className="text-slate-300">Streamlined processes</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-16">
               {isAuthenticated ? (
-                <Button size="lg" asChild>
+                <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100" asChild>
                   <Link href="/dashboard">
-                    Access Your Dashboard
+                    Access Partnership Portal
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
               ) : (
-                <Button size="lg" onClick={handleLogin}>
-                  Start Automating Now
+                <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100" onClick={handleLogin}>
+                  Start Partnership Process
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               )}
@@ -327,9 +286,25 @@ export default function HomePage() {
       <footer className="bg-slate-800 text-slate-300">
         <div className="container mx-auto px-4 md:px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2">
-              <Layers className="h-5 w-5 text-white" />
-              <span className="font-semibold text-white">Axcess Automate</span>
+            <div className="flex items-center gap-3">
+              <img
+                src="/formations-logo.png"
+                alt="Formations Logo"
+                className="h-6 w-auto brightness-0 invert"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.svg?height=24&width=100&text=Formations"
+                }}
+              />
+              <span className="text-slate-500">×</span>
+              <img
+                src="/agora-logo.png"
+                alt="Agora Logo"
+                className="h-6 w-auto brightness-0 invert"
+                onError={(e) => {
+                  e.currentTarget.src = "/placeholder.svg?height=24&width=100&text=Agora"
+                }}
+              />
+              <span className="font-semibold text-white ml-2">Partnership</span>
             </div>
             <div className="flex gap-6 mt-4 md:mt-0">
               <Link href="#" className="text-sm hover:text-white">
@@ -341,32 +316,10 @@ export default function HomePage() {
             </div>
           </div>
           <div className="mt-6 text-center text-sm text-slate-400 border-t border-slate-700 pt-6">
-            © {new Date().getFullYear()} Axcess Automate. All rights reserved.
+            © {new Date().getFullYear()} Formations × Agora Partnership. All rights reserved.
           </div>
         </div>
       </footer>
     </div>
-  )
-}
-
-function FeatureCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode
-  title: string
-  description: string
-}) {
-  return (
-    <Card className="bg-slate-50/50 hover:bg-white hover:shadow-lg transition-all">
-      <CardHeader className="flex flex-row items-center gap-4">
-        <div className="bg-slate-200 p-3 rounded-lg">{icon}</div>
-        <CardTitle className="text-lg font-semibold text-slate-900">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-slate-600">{description}</p>
-      </CardContent>
-    </Card>
   )
 }

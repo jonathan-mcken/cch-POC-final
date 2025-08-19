@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "1120S POC | Formations",
-  description: "1120S POC | Formations",
+  title: "1065 Automation POC | Formations",
+  description: "1065 Automation POC | Formations",
 };
 
 export default function RootLayout({
