@@ -147,8 +147,7 @@ export default function HomePage() {
             </h1>
             <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-slate-600">
               Formations delivers incredibly efficient 1065 tax preparation through automated inputs, automatic QA, and
-              decades of tax team experience. Agora benefits from streamlined turnaround times and consistent deadline
-              compliance.
+              decades of tax team experience. Agora benefits from streamlined turnaround times and consistent quality tax preparation.
             </p>
             <div className="mt-8 flex justify-center gap-4">
               {isAuthenticated ? (
@@ -161,7 +160,7 @@ export default function HomePage() {
               ) : (
                 <>
                   <Button size="lg" onClick={handleLogin}>
-                    Get Started with Partnership
+                    Get Started
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                   <Button size="lg" variant="outline" asChild>
